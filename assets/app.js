@@ -90,13 +90,8 @@ function activeText(){const f=S.f,p=[];
 function resetFilters(){S.f=defaultFilters();S.animMarks=true;renderAll();}
 const rerender=()=>{S.animMarks=true;renderAll();};
 const tog=(set,v)=>()=>{set.has(v)?set.delete(v):set.add(v);rerender();};
-/* zones et types : tout est coché par défaut ; un clic isole la valeur, un clic sur la seule valeur cochée rétablit tout */
-const solo=(set,all,v)=>()=>{const full=all.every(x=>set.has(x));
-  if(full){set.clear();set.add(v);}
-  else if(set.has(v)){if(set.size===1)all.forEach(x=>set.add(x));else set.delete(v);}
-  else set.add(v);
-  if(all.every(x=>set.has(x))||!set.size)all.forEach(x=>set.add(x));
-  rerender();};
+/* zones et types : un clic isole la valeur, un clic sur la seule valeur cochée rétablit tout */
+const solo=(set,v,vis,full)=>()=>{full=full||vis;if(vis.every(x=>set.has(x))){set.clear();set.add(v);}else if(set.has(v)&&set.size===1){full.forEach(x=>set.add(x));}else{set.has(v)?set.delete(v):set.add(v);if(!vis.some(x=>set.has(x)))full.forEach(x=>set.add(x));}rerender();};
 function chip(label,pressed,onclick,lead,title){return el("button",{class:"chip","aria-pressed":pressed?"true":"false",onclick,title,type:"button"},lead||null,label);}
 const PERIODS=[["7","7 j"],["30","30 j"],["90","90 j"],["all","Tout"]];
 
@@ -179,9 +174,9 @@ function renderSide(){
   const head=el("div",{class:"phead"},
     el("div",{class:"prow"},el("h2",{class:"ptitle"},"Brèves"),el("span",{class:"muted"},summaryText()),el("button",{class:"linkbtn",style:"margin-left:auto;font-size:12.5px",type:"button",onclick:resetFilters},"Réinitialiser")),
     el("div",{class:"chiprow",role:"group","aria-label":"Zone, type et période"},
-      ...["CAN","CHE","NAT"].map(z=>chip(ZONES[z],f.zones.has(z),solo(f.zones,["CAN","CHE","NAT","HKM"],z))),
+      ...["CAN","CHE","NAT"].map(z=>chip(ZONES[z],f.zones.has(z),solo(f.zones,z,["CAN","CHE","NAT"],["CAN","CHE","NAT","HKM"]))),
       el("span",{class:"sep"}),
-      ...TYPE_ORDER.map(k=>chip(TYPES[k].lab,f.types.has(k),solo(f.types,TYPE_ORDER,k),swatch(k))),
+      ...TYPE_ORDER.map(k=>chip(TYPES[k].lab,f.types.has(k),solo(f.types,k,TYPE_ORDER),swatch(k))),
       el("span",{class:"sep"}),
       ...PERIODS.map(([v,l])=>chip(l,f.period===v,()=>{f.period=v;rerender();}))),
     el("div",{class:"chiprow",role:"group","aria-label":"Filières et affichage"},
@@ -644,8 +639,8 @@ function renderSheet(s,dir){
 function filterGroups(){
   const f=S.f, g=(lab,...chips)=>el("div",{class:"fgroup"},el("span",{},lab),el("div",{class:"chips"},...chips));
   return [
-    g("Zone",...["CAN","CHE","NAT"].map(z=>chip(ZONES[z],f.zones.has(z),solo(f.zones,["CAN","CHE","NAT","HKM"],z)))),
-    g("Type",...TYPE_ORDER.map(k=>chip(TYPES[k].lab,f.types.has(k),solo(f.types,TYPE_ORDER,k),swatch(k)))),
+    g("Zone",...["CAN","CHE","NAT"].map(z=>chip(ZONES[z],f.zones.has(z),solo(f.zones,z,["CAN","CHE","NAT"],["CAN","CHE","NAT","HKM"])))),
+    g("Type",...TYPE_ORDER.map(k=>chip(TYPES[k].lab,f.types.has(k),solo(f.types,k,TYPE_ORDER),swatch(k)))),
     g("Période",...[["1","Jour"],...PERIODS].map(([v,l])=>chip(l,f.period===v,()=>{f.period=v;rerender();}))),
     g("Affichage",chip("Intérêt France",f.fr,()=>{f.fr=!f.fr;rerender();}),chip("À confirmer ("+nPending()+")",f.statut==="a_confirmer",()=>{f.statut=f.statut==="a_confirmer"?"publie":"a_confirmer";rerender();})),
     g("Filière",...Object.keys(FIL).map(k=>chip(FIL[k],f.fils.has(k),tog(f.fils,k))))
