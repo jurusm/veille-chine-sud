@@ -2,7 +2,7 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow">
 <title>Veille économique Chine du Sud</title>
 <link rel="preload" href="assets/fonts/schibsted-grotesk-v7-latin_latin-ext-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/app.css?v=aa4ef05d">
+<link rel="stylesheet" href="assets/app.css?v=a7c9e5d1">
 <meta name="description" content="Veille économique des circonscriptions de Canton et de Chengdu : carte des faits marquants, brèves sourcées, synthèses et sources.">
 </head><body>
 
@@ -21,6 +21,10 @@
       <button role="tab" data-view="sources" aria-selected="false">Sources</button>
     </nav>
     <div class="tools">
+      <button class="notebtn" id="btn-note" type="button" aria-label="Ouvrir la note interne" title="Note interne : brèves sélectionnées pour l'export Word">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        <span class="nb-lab">Note</span><span class="nb-count" id="note-count">0</span>
+      </button>
       <button class="pillbtn" id="btn-about" type="button">À propos</button>
       <button class="iconbtn" id="btn-theme" type="button" aria-label="Passer en mode clair"></button>
     </div>
@@ -95,16 +99,45 @@
   </footer>
 </div>
 
-<dialog class="fiche glass-strong" id="fiche" aria-labelledby="fiche-title">
+<dialog class="drawer fiche glass-strong" id="fiche" aria-labelledby="fiche-title">
+  <div class="dhead">
+    <div class="dnav">
+      <button class="dbtn" id="d-prev" type="button" aria-label="Brève précédente" title="Brève précédente (←)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <span class="dpos" id="d-pos"></span>
+      <button class="dbtn" id="d-next" type="button" aria-label="Brève suivante" title="Brève suivante (→)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <button class="dbtn" id="btn-close" type="button" aria-label="Fermer" title="Fermer (Échap)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
   <div class="fbody" id="fiche-body"></div>
   <div class="actions">
     <span class="status-line" id="fiche-status"></span>
     <button class="btn" id="btn-reject" hidden>Rejeter</button>
     <button class="btn" id="btn-validate" hidden>Valider et publier</button>
-    <button class="btn" id="btn-copy">Copier la brève</button>
-    <button class="btn primary" id="btn-close">Fermer</button>
+    <button class="btn" id="btn-copy">Copier</button>
+    <button class="btn primary" id="btn-addnote" type="button">Ajouter à la note</button>
   </div>
 </dialog>
+
+<dialog class="drawer panier glass-strong" id="panier" aria-labelledby="panier-title">
+  <div class="dhead">
+    <div class="ptitle"><h2 id="panier-title">Note interne</h2>
+      <button class="dbtn info" id="panier-info" type="button" aria-label="À quoi sert la note ?" aria-expanded="false" title="À quoi sert la note ?">i</button></div>
+    <button class="dbtn" id="panier-close" type="button" aria-label="Fermer" title="Fermer (Échap)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="fbody" id="panier-body"></div>
+  <div class="actions">
+    <span class="status-line" id="panier-status"></span>
+    <button class="btn" id="panier-clear" type="button">Vider</button>
+    <button class="btn" id="panier-copy" type="button">Copier le texte</button>
+    <button class="btn primary" id="panier-export" type="button">Exporter en Word</button>
+  </div>
+</dialog>
+
+<div class="bubble glass-strong" id="note-bubble" role="dialog" aria-labelledby="bubble-title" hidden>
+  <p class="bubble-t" id="bubble-title">Brève ajoutée à la note</p>
+  <p>Ajoutez les brèves utiles avec le bouton <span class="kbd">+</span>, rangez-les dans la note, puis exportez-la en Word : une note interne en Times New Roman, classée par rubrique, sources en pied de chaque brève.</p>
+  <div class="bubble-a"><button class="linkbtn" id="bubble-ok" type="button">Compris</button><button class="btn primary sm" id="bubble-open" type="button">Ouvrir la note</button></div>
+</div>
 
 <dialog class="about glass-strong" id="about" aria-labelledby="about-title">
   <div class="about-in">
@@ -121,6 +154,6 @@
 
 <script>window.echarts={registerMap:function(n,g){window.__chinaGeo=g;}};</script>
 <script src="assets/geo/china.js" onerror="window.__chinaGeoError=true"></script>
-<script src="assets/app.js?v=aa4ef05d"></script>
+<script src="assets/app.js?v=a7c9e5d1"></script>
 
 </body></html>
