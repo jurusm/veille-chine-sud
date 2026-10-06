@@ -19,7 +19,7 @@ head = ('<!doctype html>\n<html lang="fr"><head><meta charset="utf-8">'
 meta_desc = re.search(r'<meta name="description"[^>]*>', rest).group(0)
 body = rest.replace(meta_desc, "").replace("<!--CSS-->", "")
 gh = (head + meta_desc + "\n</head><body>\n" + body.replace("<!--JS-->",
-      SHIM + '\n<script src="assets/geo/china.js" onerror="window.__chinaGeoError=true"></script>\n<script src="assets/app.js?v=' + V + '"></script>')
+      SHIM + '\n<script src="assets/geo/china.js" onerror="window.__chinaGeoError=true"></script>\n<script src="assets/app.js?v=' + V + '"></script>\n<script data-goatcounter="https://jurusm.goatcounter.com/count" data-goatcounter-settings='{"no_onload":true}' async src="//gc.zgo.at/count.js"></script>')
       + "\n</body></html>\n")
 open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(gh)
 

@@ -916,7 +916,9 @@ $("#panier-export").addEventListener("click",async()=>{
 });
 
 /* ---------- Views, about, entrance ---------- */
-function setView(v,first){S.view=v;store.set("vcs.view",v);
+const VIEW_PATH={today:"/carte",syntheses:"/syntheses",fil:"/breves",sources:"/sources"};
+function countView(v){let n=0;const go=()=>{if(window.goatcounter&&window.goatcounter.count){window.goatcounter.count({path:VIEW_PATH[v]||"/"+v,title:document.title});}else if(n++<20)setTimeout(go,500);};go();}
+function setView(v,first){S.view=v;store.set("vcs.view",v);if(location.hostname.endsWith("github.io"))countView(v);
   $$("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.view===v?"true":"false"));
   for(const id of VIEWS){const n=$("#view-"+id);n.hidden=id!==v;if(id===v&&!first&&id!=="today"){n.classList.remove("view-in");void n.offsetWidth;n.classList.add("view-in");}}
   if(v==="today") requestAnimationFrame(()=>applyView());
