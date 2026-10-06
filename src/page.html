@@ -1,105 +1,99 @@
-<title>Veille Chine du Sud</title>
-<meta name="description" content="Veille économique sur la Chine du Sud : carte des brèves, synthèses, mode 5 minutes et sources.">
+<title>Veille économique Chine du Sud</title>
+<meta name="description" content="Veille économique des circonscriptions de Canton et de Chengdu : carte des faits marquants, brèves sourcées, synthèses et sources.">
 <!--CSS-->
 
-<div class="wrap" id="app">
-  <header class="top">
-    <div class="brand">
-      <div class="seal" aria-hidden="true">华南</div>
-      <div>
-        <h1>Veille Chine du Sud</h1>
-        <div class="sub">Circonscriptions de Canton et de Chengdu</div>
-      </div>
-    </div>
+<div class="app" id="app">
+  <header class="topbar glass" id="topbar">
+    <a class="brand" href="#today" data-go="today" aria-label="Veille économique Chine du Sud, accueil">
+      <span class="seal" aria-hidden="true"><span>华南</span><span>观察</span></span>
+      <span class="wordmark"><span class="wm-1">Veille économique</span><span class="wm-2">Chine du Sud</span></span>
+    </a>
     <nav class="tabs" role="tablist" aria-label="Vues">
-      <button role="tab" data-view="today" aria-selected="true">Aujourd'hui</button>
+      <button role="tab" data-view="today" aria-selected="true">Carte du jour</button>
       <button role="tab" data-view="syntheses" aria-selected="false">Synthèses</button>
-      <button role="tab" data-view="fil" aria-selected="false">Fil des brèves <span class="count" id="cnt-fil"></span></button>
+      <button role="tab" data-view="fil" aria-selected="false">Brèves <span class="count" id="cnt-fil"></span></button>
       <button role="tab" data-view="sources" aria-selected="false">Sources</button>
     </nav>
     <div class="tools">
-      <button class="iconbtn" id="btn-theme" type="button" aria-label="Passer en mode sombre" title="Mode sombre"></button>
+      <button class="pillbtn" id="btn-about" type="button">À propos</button>
+      <button class="iconbtn" id="btn-theme" type="button" aria-label="Passer en mode clair"></button>
     </div>
   </header>
-  <div class="dateline"><span id="dl-today">—</span><span>Collecte : <b id="dl-collect">—</b></span><span id="dl-fx"></span><span id="dl-snap" class="snap" hidden></span></div>
 
-  <!-- AUJOURD'HUI -->
+  <!-- CARTE DU JOUR -->
   <section id="view-today" class="today">
-    <div class="morning" id="morning" aria-live="polite"></div>
-
-    <div class="stage" id="stage">
+    <div class="hero" id="hero">
       <div class="mapbox" id="mapbox">
         <svg id="map" role="img" aria-label="Carte de la Chine du Sud avec les brèves géolocalisées"></svg>
+        <div class="vignette" aria-hidden="true"></div>
         <div class="tip" id="tip"></div>
         <div class="zoomhint" id="zoomhint">Pour zoomer : ⌘ ou Ctrl + molette, ou pincez</div>
       </div>
-      <div class="glass frames" role="group" aria-label="Cadrage de la carte">
+
+      <aside class="glass panel-left" id="morning" aria-label="Le point du matin"></aside>
+      <aside class="glass panel-right" id="side" aria-label="Brèves"></aside>
+
+      <div class="mapbar" role="group" aria-label="Cadrage et légende de la carte"><div class="glass mapbar-in">
         <div class="seg" id="frames">
           <button data-f="sud" aria-pressed="true">Chine du Sud</button>
           <button data-f="delta" aria-pressed="false">Delta des Perles</button>
-          <button data-f="fujian" aria-pressed="false">Côte du Fujian</button>
-          <button data-f="sichuan" aria-pressed="false">Sichuan–Chongqing</button>
         </div>
         <div class="zoombtns">
           <button id="zoom-in" aria-label="Zoomer">+</button>
           <button id="zoom-out" aria-label="Dézoomer">−</button>
         </div>
-      </div>
-      <div class="glass legend-panel" id="legend-panel">
         <div class="legend">
           <span><i class="sw sw-cj"></i>Conjoncture</span>
           <span><i class="sw sw-fm"></i>Fait marquant</span>
           <span><i class="sw sw-op"></i>Opportunité</span>
-          <span><i class="sw sw-prov"></i>Provincial</span>
         </div>
-        <div class="timeline" id="timeline"></div>
-        <span class="basemap-note" id="basemap-note"></span>
-      </div>
-      <aside class="glass side" id="side" aria-label="Brèves"></aside>
+      </div></div>
+      <button class="scrollcue" id="scrollcue" type="button">L'essentiel en 5 minutes</button>
     </div>
 
-    <article class="paper reading cinq" id="cinq-body"></article>
+    <section class="band" id="cinq-body" aria-label="L'essentiel en 5 minutes"></section>
   </section>
 
   <!-- SYNTHESES -->
-  <section id="view-syntheses" hidden>
-    <article class="paper reading">
-      <div class="subtabs"><div class="seg" id="synth-seg">
-        <button data-p="jour" aria-pressed="true">Jour</button>
-        <button data-p="semaine" aria-pressed="false">Semaine</button>
-        <button data-p="mois" aria-pressed="false">Mois</button>
-      </div></div>
-      <div id="synth-body"></div>
-    </article>
+  <section id="view-syntheses" class="page" hidden>
+    <div id="synth-body" class="synth"></div>
   </section>
 
-  <!-- FIL -->
-  <section id="view-fil" class="fil-view" hidden>
-    <div class="glass filters-block" id="filters-fil" aria-label="Filtres"></div>
-    <div class="paper fil-panel">
-      <div class="toolbar">
-        <span>Grouper par</span>
-        <div class="seg" id="groupby">
-          <button data-g="date" aria-pressed="true">Date</button>
-          <button data-g="rubrique" aria-pressed="false">Rubrique du SER</button>
-          <button data-g="zone" aria-pressed="false">Zone</button>
+  <!-- BRÈVES -->
+  <section id="view-fil" class="page" hidden>
+    <div class="filgrid">
+      <aside class="glass filrail" id="filters-fil" aria-label="Filtres"></aside>
+      <div class="glass fil-panel">
+        <div class="toolbar">
+          <span>Grouper par</span>
+          <div class="seg" id="groupby">
+            <button data-g="date" aria-pressed="true">Date</button>
+            <button data-g="rubrique" aria-pressed="false">Rubrique du SER</button>
+            <button data-g="zone" aria-pressed="false">Zone</button>
+          </div>
+          <span id="fil-meta" class="muted" style="margin-left:auto"></span>
         </div>
-        <span id="fil-meta" class="muted" style="margin-left:auto"></span>
+        <div class="fil-list" id="fil-list"></div>
       </div>
-      <div class="fil-list" id="fil-list"></div>
+      <aside class="glass overview" id="overview" aria-label="Aperçu de la sélection"></aside>
     </div>
   </section>
 
   <!-- SOURCES -->
-  <section id="view-sources" hidden>
-    <div class="paper" style="overflow:hidden">
-      <div class="srcsum" id="src-sum"></div>
-      <div class="tablewrap"><table class="src" id="src-table"></table></div>
+  <section id="view-sources" class="page" hidden>
+    <div class="srcgrid">
+      <div class="glass srcsum" id="src-sum"></div>
+      <div class="glass tablewrap"><table class="src" id="src-table"></table></div>
     </div>
   </section>
+
+  <footer class="foot-site" id="foot-site">
+    <span>Projet expérimental de Matthieu Jurus. Contenus indicatifs, sans valeur officielle.</span>
+    <button class="linkbtn" type="button" data-about>À propos du projet</button>
+  </footer>
 </div>
 
-<dialog class="fiche" id="fiche" aria-labelledby="fiche-title">
+<dialog class="fiche glass-strong" id="fiche" aria-labelledby="fiche-title">
   <div class="fbody" id="fiche-body"></div>
   <div class="actions">
     <span class="status-line" id="fiche-status"></span>
@@ -107,6 +101,19 @@
     <button class="btn" id="btn-validate" hidden>Valider et publier</button>
     <button class="btn" id="btn-copy">Copier la brève</button>
     <button class="btn primary" id="btn-close">Fermer</button>
+  </div>
+</dialog>
+
+<dialog class="about glass-strong" id="about" aria-labelledby="about-title">
+  <div class="about-in">
+    <span class="seal big" aria-hidden="true"><span>华南</span><span>观察</span></span>
+    <p class="about-kicker">Projet expérimental</p>
+    <h2 id="about-title">Veille économique Chine du Sud</h2>
+    <p>Ce site a été conçu et développé à titre expérimental par <b>Matthieu Jurus</b>, à l'intention du bureau de Canton du Service économique régional de Pékin.</p>
+    <p>Chaque matin, il rassemble l'actualité économique des circonscriptions de Canton et de Chengdu : brèves sourcées au format des Brèves du SER, synthèses quotidiennes, hebdomadaires et mensuelles, carte des faits marquants et suivi de plus de quarante sources chinoises, françaises et européennes. La collecte et la rédaction sont automatisées ; chaque chiffre renvoie à sa source et les informations incertaines sont signalées comme telles.</p>
+    <p>Il se veut indicatif de la motivation, de la rigueur et de l'esprit d'initiative que je souhaite apporter au poste de conseiller économique en Chine du Sud.</p>
+    <p class="about-note">Les contenus sont fournis à titre indicatif et n'engagent ni la DG Trésor ni le Service économique régional.</p>
+    <button class="btn primary big" id="btn-enter" type="button">Entrer dans la veille</button>
   </div>
 </dialog>
 
